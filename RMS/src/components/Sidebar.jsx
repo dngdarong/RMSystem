@@ -4,7 +4,7 @@ function Sidebar({ isOpen = false, onClose = () => {} }) {
   const mobileClasses = isOpen ? 'fixed inset-0 z-40 flex' : 'hidden sm:flex';
 
   return (
-    <div className={`${mobileClasses} flex-col gap-4 p-4 bg-gray-800 text-white sm:h-screen w-full sm:w-48`}>
+    <div className={`${mobileClasses} flex flex-col gap-4 p-4 bg-gray-800 text-white sm:h-screen w-full sm:w-48`}>
       {/* mobile close button */}
       {isOpen && (
         <div className="sm:hidden absolute top-4 right-4 z-50">
