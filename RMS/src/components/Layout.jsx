@@ -8,10 +8,10 @@ function Layout({ children }) {
 
   return (
     <div className="app-layout flex flex-col sm:flex-row">
-      <Sidebar isOpen={mobileOpen} onClose={() => setMobileOpen(false)} className="fixed" />
+      <Sidebar isOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
 
       {/* Page content: stacks under sidebar on small screens, sits beside on sm+ */}
-      <main className="app-container flex-1 p-4 sm:p-6 bg-gray-500 min-h-screen sm:ml-48">
+      <main className=" app-container flex-1 p-4 sm:p-6 bg-gray-50 min-h-screen">
         {/* mobile hamburger (visible on phones) */}
         <div className="sm:hidden">
           <button
