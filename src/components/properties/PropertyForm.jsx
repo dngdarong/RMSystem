@@ -48,14 +48,19 @@ function PropertyForm({ property, onSave }) {
 
       <div>
         <label className="block text-sm font-medium">Type</label>
-        <input
-          type="text"
+        <select
           className="w-full border p-2 rounded"
           value={type}
           onChange={(e) => setType(e.target.value)}
-          placeholder="Enter property type"
           required
-        />
+        >
+          <option value="" disabled>Select property type</option>
+          <option value="Apartment">Apartment</option>
+          <option value="House">House</option>
+          <option value="Condo">Condo</option>
+          <option value="Commercial">Commercial</option>
+          <option value="Land">Land</option>
+        </select>
       </div>
 
       <div>
