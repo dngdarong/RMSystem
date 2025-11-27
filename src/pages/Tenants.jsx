@@ -1,40 +1,152 @@
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from '../components/tenant/Header';
 import SearchBar from '../components/tenant/SearchBar';
-import Table from '../components/tenant/Table';
+import Table from '../components/tenant/Table'; // Updated import name
 import Drawer from '../components/Drawer';
 import TenantForm from '../components/tenant/TenantForm';
 import Pagination from '../components/paginations/Pagination';
 
- function Tenants() {
+function Tenants() {
+  // Mock Data
   const [tenants, setTenants] = useState([
-    { id: 1,  fullName: "John Doe", phone: "123-456-7890", currentRental: "House A", paymentStatus: "Paid", idCard: "ID12345" },
-    { id: 2,  fullName: "Jane Smith", phone: "987-654-3210", currentRental: "Villa B", paymentStatus: "Pending", idCard: "ID67890" },
-    { id: 3,  fullName: "Alice Johnson", phone: "555-123-4567", currentRental: "Apartment C", paymentStatus: "Overdue", idCard: "ID54321" },
+    { 
+      id: 1,
+      fullName: "John Doe",
+      phone: "123-456-7890",
+      currentRental: "House A",
+      paymentStatus: "Paid",
+      idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png" 
+    },
+    { 
+      id: 2,
+      fullName: "Jane Smith",
+      phone: "987-654-3210",
+      currentRental: "Villa B",
+      paymentStatus: "Pending",
+      idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png" 
+    },
+    { 
+      id: 3,
+      fullName: "Alice Johnson",
+      phone: "555-123-4567",
+      currentRental: "Apartment C",
+      paymentStatus: "Overdue",
+      idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png" 
+    },
+    // Added extra data to demonstrate pagination
+    { id: 4,
+       fullName: "Bob Brown",
+        phone: "111-222-3333",
+         currentRental: "Condo D",
+          paymentStatus: "Paid",
+           idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png"
+           },
+    { 
+      id: 5,
+       fullName: "Charlie Davis",
+        phone: "444-555-6666",
+         currentRental: "House E",
+          paymentStatus: "Paid",
+           idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png"
+           },
+    { 
+      id: 6,
+       fullName: "Diana Evans",
+        phone: "777-888-9999",
+         currentRental: "Villa F",
+          paymentStatus: "Pending",
+           idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png"
+           },
+    { 
+      id: 7,
+      fullName: "John Doe",
+      phone: "123-456-7890",
+      currentRental: "House A",
+      paymentStatus: "Paid",
+      idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png" 
+    },
+    { 
+      id: 8,
+      fullName: "Jane Smith",
+      phone: "987-654-3210",
+      currentRental: "Villa B",
+      paymentStatus: "Pending",
+      idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png" 
+    },
+    { 
+      id: 9,
+      fullName: "Alice Johnson",
+      phone: "555-123-4567",
+      currentRental: "Apartment C",
+      paymentStatus: "Overdue",
+      idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png" 
+    },
+    // Added extra data to demonstrate pagination
+    { id: 10,
+       fullName: "Bob Brown",
+        phone: "111-222-3333",
+         currentRental: "Condo D",
+          paymentStatus: "Paid",
+           idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png"
+           },
+    { 
+      id: 11,
+       fullName: "Charlie Davis",
+        phone: "444-555-6666",
+         currentRental: "House E",
+          paymentStatus: "Paid",
+           idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png"
+           },
+    { 
+      id: 12,
+       fullName: "Diana Evans",
+        phone: "777-888-9999",
+         currentRental: "Villa F",
+          paymentStatus: "Pending",
+           idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png"
+           },
   ]);
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [editingTenant, setEditingTenant] = useState(null);
 
-  // Search/filter state
+  // Search/Filter State
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
 
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10; // Change this number to show more/less rows
+
+  // --- HANDLERS ---
+
   const openDrawer = () => setIsDrawerOpen(true);
+  
   const closeDrawer = () => {
     setIsDrawerOpen(false);
     setEditingTenant(null);
   };
 
-  const handleSaveTenant = (tenant) => {
+  const handleSaveTenant = (tenantData) => {
+    // IMAGE HANDLING: 
+    // If the user uploaded a new file (Object), we must convert it to a URL to display it in the table.
+    // In a real app, you would upload to a server here and get a URL back.
+    let processedIdCard = tenantData.idCard;
+    if (tenantData.idCard instanceof File) {
+      processedIdCard = URL.createObjectURL(tenantData.idCard);
+    }
+
+    const finalTenantData = { ...tenantData, idCard: processedIdCard };
+
     if (editingTenant) {
+      // Update existing
       setTenants((prev) =>
-        prev.map((t) => (t.id === editingTenant.id ? { ...t, ...tenant } : t))
+        prev.map((t) => (t.id === editingTenant.id ? { ...t, ...finalTenantData } : t))
       );
     } else {
-      const newTenant = { id: Date.now(), ...tenant };
-      setTenants((prev) => [...prev, newTenant]);
+      // Add new
+      const newTenant = { id: Date.now(), ...finalTenantData };
+      setTenants((prev) => [newTenant, ...prev]); // Add to top of list
     }
     closeDrawer();
   };
@@ -42,6 +154,10 @@ import Pagination from '../components/paginations/Pagination';
   const handleDeleteTenant = (id) => {
     if (window.confirm("Are you sure you want to delete this tenant?")) {
       setTenants((prev) => prev.filter((t) => t.id !== id));
+      // If we delete the last item on a page, go back one page
+      if (currentItems.length === 1 && currentPage > 1) {
+        setCurrentPage(currentPage - 1);
+      }
     }
   };
 
@@ -50,7 +166,7 @@ import Pagination from '../components/paginations/Pagination';
     setIsDrawerOpen(true);
   };
 
-  // Filter tenants based on search and status
+  // --- FILTERING LOGIC ---
   const filteredTenants = tenants.filter((t) => {
     const matchesSearch = t.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           t.currentRental.toLowerCase().includes(searchTerm.toLowerCase());
@@ -58,8 +174,19 @@ import Pagination from '../components/paginations/Pagination';
     return matchesSearch && matchesStatus;
   });
 
+  // Reset to page 1 if search or filter changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, filterStatus]);
+
+  // --- PAGINATION LOGIC ---
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredTenants.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredTenants.length / itemsPerPage);
+
   return (
-    <div className="p-4">
+    <div className="p-4 space-y-4">
       <Header onOpenDrawer={openDrawer} />
 
       <SearchBar
@@ -69,17 +196,21 @@ import Pagination from '../components/paginations/Pagination';
         onFilterChange={(e) => setFilterStatus(e.target.value)}
       />
 
+      {/* Pass only currentItems to table, not the full list */}
       <Table
-        tenants={filteredTenants}
+        tenants={currentItems}
         onEdit={handleEditTenant}
         onDelete={handleDeleteTenant}
       />
 
-      <Pagination
-        currentPage={1}
-        totalPages={5}
-        onPageChange={(page) => console.log("Change to page:", page)}
-      />
+      {/* Only show pagination if we have data */}
+      {filteredTenants.length > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={(page) => setCurrentPage(page)}
+        />
+      )}
 
       <Drawer
         isOpen={isDrawerOpen}
