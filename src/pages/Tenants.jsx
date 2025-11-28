@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Header from '../components/tenant/Header';
 import SearchBar from '../components/tenant/SearchBar';
-import Table from '../components/tenant/Table'; // Updated import name
+import Table from '../components/tenant/TenantTable'; // Updated import name
 import Drawer from '../components/Drawer';
 import TenantForm from '../components/tenant/TenantForm';
 import Pagination from '../components/paginations/Pagination';
