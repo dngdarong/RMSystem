@@ -15,7 +15,8 @@ function Tenants() {
       phone: "123-456-7890",
       currentRental: "House A",
       paymentStatus: "Paid",
-      idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png" 
+      idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png",
+      createdAt: "2023-10-24T10:30:00.000Z"
     },
     { 
       id: 2,
@@ -23,7 +24,8 @@ function Tenants() {
       phone: "987-654-3210",
       currentRental: "Villa B",
       paymentStatus: "Pending",
-      idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png" 
+      idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png",
+      createdAt: "2023-11-01T14:15:00.000Z" 
     },
     { 
       id: 3,
@@ -31,7 +33,8 @@ function Tenants() {
       phone: "555-123-4567",
       currentRental: "Apartment C",
       paymentStatus: "Overdue",
-      idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png" 
+      idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png",
+      createdAt: "2023-11-10T09:45:00.000Z"
     },
     // Added extra data to demonstrate pagination
     { id: 4,
@@ -39,7 +42,8 @@ function Tenants() {
         phone: "111-222-3333",
          currentRental: "Condo D",
           paymentStatus: "Paid",
-           idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png"
+           idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png",
+            createdAt: "2023-11-15T11:20:00.000Z"
            },
     { 
       id: 5,
@@ -47,7 +51,8 @@ function Tenants() {
         phone: "444-555-6666",
          currentRental: "House E",
           paymentStatus: "Paid",
-           idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png"
+           idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png",
+            createdAt: "2023-11-20T16:05:00.000Z"
            },
     { 
       id: 6,
@@ -55,7 +60,8 @@ function Tenants() {
         phone: "777-888-9999",
          currentRental: "Villa F",
           paymentStatus: "Pending",
-           idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png"
+           idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png",
+           createdAt: "2023-10-24T10:30:00.000Z"
            },
     { 
       id: 7,
@@ -63,7 +69,8 @@ function Tenants() {
       phone: "123-456-7890",
       currentRental: "House A",
       paymentStatus: "Paid",
-      idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png" 
+      idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png",
+      createdAt: "2023-10-24T10:30:00.000Z"
     },
     { 
       id: 8,
@@ -71,7 +78,8 @@ function Tenants() {
       phone: "987-654-3210",
       currentRental: "Villa B",
       paymentStatus: "Pending",
-      idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png" 
+      idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png",
+      createdAt: "2023-11-01T14:15:00.000Z" 
     },
     { 
       id: 9,
@@ -79,7 +87,8 @@ function Tenants() {
       phone: "555-123-4567",
       currentRental: "Apartment C",
       paymentStatus: "Overdue",
-      idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png" 
+      idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png",
+      createdAt: "2023-10-24T10:30:00.000Z" 
     },
     // Added extra data to demonstrate pagination
     { id: 10,
@@ -87,7 +96,8 @@ function Tenants() {
         phone: "111-222-3333",
          currentRental: "Condo D",
           paymentStatus: "Paid",
-           idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png"
+           idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png",
+           createdAt: "2023-10-24T10:30:00.000Z"
            },
     { 
       id: 11,
@@ -95,7 +105,8 @@ function Tenants() {
         phone: "444-555-6666",
          currentRental: "House E",
           paymentStatus: "Paid",
-           idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png"
+           idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png",
+           createdAt: "2023-10-24T10:30:00.000Z"
            },
     { 
       id: 12,
@@ -103,7 +114,8 @@ function Tenants() {
         phone: "777-888-9999",
          currentRental: "Villa F",
           paymentStatus: "Pending",
-           idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png"
+           idCard: "https://www.nyc.gov/assets/idnyc/images/content/card/Sample-IDNYC-Card.png",
+           createdAt: "2023-10-24T10:30:00.000Z"
            },
   ]);
 
@@ -145,7 +157,7 @@ function Tenants() {
       );
     } else {
       // Add new
-      const newTenant = { id: Date.now(), ...finalTenantData };
+      const newTenant = { id: Date.now(), ...finalTenantData, createdAt: new Date().toISOString() };
       setTenants((prev) => [newTenant, ...prev]); // Add to top of list
     }
     closeDrawer();

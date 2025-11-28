@@ -2,12 +2,26 @@
 import React from "react";
 
 function TenantRow({ item, index, onEdit, onDelete, onViewImage }) {
+  
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric'
+    });
+  };
+
   return (
     <tr className="hover:bg-gray-50 transition-colors">
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{index + 1}</td>
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.fullName}</td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.phone}</td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.currentRental}</td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        {formatDate(item.createdAt)}
+      </td>
 
       {/* ID Card Cell */}
       <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-teal-600">

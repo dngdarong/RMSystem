@@ -1,7 +1,7 @@
 // src/components/ImageModal.jsx
 import React from "react";
 
-function ImageModal({ imageUrl, fullName, phone, currentRental, onClose }) {
+function ImageModal({ imageUrl, fullName, phone, currentRental,createdAt, onClose }) {
   if (!imageUrl) return null;
 
   return (
@@ -54,6 +54,12 @@ function ImageModal({ imageUrl, fullName, phone, currentRental, onClose }) {
               <div>
                 <label className="block text-xs font-medium text-gray-400">Phone Number</label>
                 <p className="text-base font-medium text-teal-600">{phone || "N/A"}</p>
+              </div>
+
+              {/* Joined Date */}
+              <div>
+                <label className="block text-xs font-medium text-gray-400">Joined Date</label>
+                <p className="text-base font-medium text-teal-600">{createdAt ? new Date(createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : "N/A"}</p>
               </div>
 
               {/* Current Rental */}

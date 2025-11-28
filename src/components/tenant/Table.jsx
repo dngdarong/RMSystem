@@ -17,6 +17,7 @@ function TenantTable({ tenants = [], onEdit, onDelete }) {
               <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Full Name</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Phone</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Current Rental</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Joined Date</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">ID Card</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Payment Status</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Actions</th>
@@ -52,6 +53,7 @@ function TenantTable({ tenants = [], onEdit, onDelete }) {
         fullName={selectedTenantForImage?.fullName}
         phone={selectedTenantForImage?.phone}
         currentRental={selectedTenantForImage?.currentRental}
+        createdAt={selectedTenantForImage?.createdAt}
         onClose={() => setSelectedTenantForImage(null)}
       />
     </div>
