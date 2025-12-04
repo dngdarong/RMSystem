@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-
+import MaintenanceHeader from '../components/maintenance/MaintenanceHeader';
 
  function Maintenance() {
   // const [stats, setStats] = useState({
@@ -14,7 +14,7 @@ import { useState } from 'react';
 
   return (
     <div>
-      <h1>hello Maintenance</h1>
+      <MaintenanceHeader onOpenDrawer={() => {}} />
     </div>
   );
 }
