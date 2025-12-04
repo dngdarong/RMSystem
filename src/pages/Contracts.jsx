@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import ContractHeader from '../components/contracts/ContractHeader';
 import ContractFilters from '../components/contracts/ContractFilters';
 import ContractRow from '../components/contracts/ContractRow';
@@ -6,6 +6,9 @@ import ContractForm from '../components/contracts/ContractForm';
 import ContractDetailsModal from '../components/contracts/ContractDetailsModal';
 import Pagination from '../components/paginations/Pagination';
 import Drawer from '../components/Drawer';
+import AlertModal from '../components/AlertModal';
+import SuccessModal from '../components/SuccessModal';
+import ErrorModal from '../components/ErrorModal';
 
 function Contracts() {
   // 1. DATA STATE (Mock Data)
@@ -22,6 +25,15 @@ function Contracts() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const [viewingContract, setViewingContract] = useState(null);
+
+  // ALERT MODAL STATE
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [idToDelete, setIdToDelete] = useState(null);
+  
+  // SUCCESS / ERROR MODAL STATE
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   // 3. DRAWER STATE
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -48,19 +60,32 @@ function Contracts() {
     setIsDrawerOpen(true);
   };
 
-  const handleDelete = (id) => {
-    if(window.confirm("Delete this contract?")) {
-      setContracts(prev => prev.filter(c => c.id !== id));
-    }
+  const handleDeleteClick = (id) => {
+    setIdToDelete(id); 
+    setAlertOpen(true); 
+  };
+
+  // --- FIXED DELETE FUNCTION ---
+  const confirmDelete = () => {
+    // FIX: Changed setRequests to setContracts
+    setContracts(prev => prev.filter(c => c.id !== idToDelete));
   };
 
   const handleSave = (data) => {
+    // Example Error Handling Check
+    if(!data.tenantName || !data.property) {
+        setErrorMessage("Tenant Name and Property are required.");
+        setShowError(true);
+        return;
+    }
+
     if (editingContract) {
       setContracts(prev => prev.map(c => c.id === editingContract.id ? { ...c, ...data } : c));
     } else {
       setContracts(prev => [{ id: Date.now(), ...data }, ...prev]);
     }
     setIsDrawerOpen(false);
+    setShowSuccess(true);
   };
 
   // --- LOGIC ---
@@ -107,7 +132,7 @@ function Contracts() {
                     index={index + indexOfFirstItem} 
                     item={item} 
                     onEdit={handleEdit} 
-                    onDelete={handleDelete} 
+                    onDelete={handleDeleteClick} 
                     onView={handleView}
                   />
                 ))
@@ -124,9 +149,38 @@ function Contracts() {
       <Drawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} title={editingContract ? "Edit Contract" : "New Contract"}>
         <ContractForm contract={editingContract} onSave={handleSave} />
       </Drawer>
+
       <ContractDetailsModal 
         contract={viewingContract} 
         onClose={() => setViewingContract(null)} 
+      />
+
+      {/* Alert Modal for Deletion Confirmation */}
+      <AlertModal
+        isOpen={alertOpen}
+        onClose={() => setAlertOpen(false)}
+        onConfirm={confirmDelete}
+        title="Delete Contract?"
+        message="Are you sure you want to remove this contract? This action cannot be undone."
+        confirmText="Yes, Delete"
+        type="danger"
+      />
+
+      {/* Success Modal */}
+      <SuccessModal
+        isOpen={showSuccess}
+        onClose={() => setShowSuccess(false)}
+        title="Contract Saved!"
+        message="The contract details have been successfully updated."
+      />
+
+      {/* Error Modal */}
+      <ErrorModal
+        isOpen={showError}
+        onClose={() => setShowError(false)}
+        title="Validation Error"
+        message={errorMessage}
+        buttonText="Fix It"
       />
     </div>
   );

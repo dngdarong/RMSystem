@@ -7,6 +7,11 @@ import PaymentTable from '../components/payments/PaymentTable';
 import Pagination from '../components/paginations/Pagination';
 import Drawer from '../components/Drawer';
 
+// 1. IMPORT MODALS
+import AlertModal from '../components/AlertModal';
+import SuccessModal from '../components/SuccessModal';
+import ErrorModal from '../components/ErrorModal';
+
 function Payments() {
   // 1. DATA STATE (Mock Data)
   const [payments, setPayments] = useState([
@@ -25,11 +30,20 @@ function Payments() {
 
   // 3. PAGINATION STATE
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 5; // Set to 5 to easily test pagination
 
-  // 4. DRAWER & FORM STATE (FIXED: Added these missing states)
+  // 4. DRAWER & FORM STATE
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [editingPayment, setEditingPayment] = useState(null);
+
+  // 5. MODAL STATES
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [idToDelete, setIdToDelete] = useState(null);
+  
+  const [showSuccess, setShowSuccess] = useState(false);
+  
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   // --- HANDLERS ---
 
@@ -37,7 +51,7 @@ function Payments() {
 
   const closeDrawer = () => {
     setIsDrawerOpen(false);
-    setEditingPayment(null); // Clear editing state when closing
+    setEditingPayment(null);
   };
 
   const handleClearFilters = () => {
@@ -47,41 +61,53 @@ function Payments() {
     setCurrentPage(1); 
   };
 
-  const handleDelete = (id) => {
-    if(window.confirm("Are you sure you want to delete this payment record?")){
-      setPayments(prev => prev.filter(p => p.id !== id));
-      // Go back a page if we delete the last item on the current page
-      if (currentItems.length === 1 && currentPage > 1) {
-        setCurrentPage(currentPage - 1);
-      }
+  // --- DELETE LOGIC (UPDATED) ---
+  const handleDeleteClick = (id) => {
+    setIdToDelete(id);
+    setAlertOpen(true); // Open Alert Modal instead of window.confirm
+  };
+
+  const confirmDelete = () => {
+    setPayments(prev => prev.filter(p => p.id !== idToDelete));
+    
+    // Go back a page if we delete the last item on the current page
+    if (currentItems.length === 1 && currentPage > 1) {
+      setCurrentPage(currentPage - 1);
     }
   };
 
-  // FIXED: Connect to state
   const handleEdit = (item) => {
     setEditingPayment(item);
     openDrawer();
   };
 
-  // FIXED: Connect to state
   const handleAdd = () => {
-    setEditingPayment(null); // Ensure we are in "Add" mode
+    setEditingPayment(null);
     openDrawer();
   };
 
-  // FIXED: Added Logic to save data
+  // --- SAVE LOGIC (UPDATED) ---
   const handleSavePayment = (paymentData) => {
+    // 1. Validation
+    if (!paymentData.tenantName || !paymentData.amount) {
+        setErrorMessage("Tenant Name and Amount are required.");
+        setShowError(true); // Trigger Error Modal
+        return;
+    }
+
+    // 2. Save Data
     if (editingPayment) {
-      // Update existing payment
       setPayments((prev) =>
         prev.map((p) => (p.id === editingPayment.id ? { ...p, ...paymentData } : p))
       );
     } else {
-      // Add new payment
       const newPayment = { id: Date.now(), ...paymentData };
       setPayments((prev) => [newPayment, ...prev]);
     }
+    
+    // 3. Cleanup & Success Feedback
     closeDrawer();
+    setShowSuccess(true); // Trigger Success Modal
   };
 
   // --- FILTERING LOGIC ---
@@ -124,7 +150,7 @@ function Payments() {
       <PaymentTable 
         payments={currentItems} 
         onEdit={handleEdit} 
-        onDelete={handleDelete} 
+        onDelete={handleDeleteClick} // Use new click handler
       />
       
       {filteredPayments.length > 0 && (
@@ -143,6 +169,36 @@ function Payments() {
       >
         <PaymentForm payment={editingPayment} onSave={handleSavePayment} />
       </Drawer>
+
+      {/* --- RENDER MODALS --- */}
+
+      {/* Alert Modal for Deletion Confirmation */}
+      <AlertModal
+        isOpen={alertOpen}
+        onClose={() => setAlertOpen(false)}
+        onConfirm={confirmDelete}
+        title="Delete Payment?"
+        message="Are you sure you want to delete this payment record? This action cannot be undone."
+        confirmText="Yes, Delete"
+        type="danger"
+      />
+
+      {/* Success Modal for Save Confirmation */}
+      <SuccessModal
+        isOpen={showSuccess}
+        onClose={() => setShowSuccess(false)}
+        title="Success!"
+        message="Payment record saved successfully."
+      />
+
+      {/* Error Modal for Validation Failures */}
+      <ErrorModal
+        isOpen={showError}
+        onClose={() => setShowError(false)}
+        title="Validation Error"
+        message={errorMessage}
+        buttonText="Okay, I'll fix it"
+      />
     </div>
   );
 }
